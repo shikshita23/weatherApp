@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMagnifyingGlass,
   faLocationDot,
+  faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import cloudy from "./assets/cloudy.jpg";
 import drizzle from "./assets/drizzle.png";
@@ -28,7 +29,9 @@ function App() {
   const [background, setBackground] = useState("");
   const [iconid, setIconid] = useState("");
   const [wicon, setWicon] = useState("");
-
+  const [seeMore,setSeeMore]=useState("False");
+  const [weatherdetails,setWeatherDetails]=useState([]);
+  
   const handleSearchCity = () => {
     setCity(search);
     setSearch("");
@@ -42,6 +45,8 @@ function App() {
         );
         const data = response?.data;
         console.log("data --->", data);
+       
+
         setInfo(Math.floor(data.main.temp));
         setHumidity(data.main.humidity);
         setwindSpeed(data.wind.speed);
@@ -50,7 +55,7 @@ function App() {
         setDesc(data.weather[0].description);
         setBackground(data.weather[0].main);
         setIconid(data.weather[0].icon);
-        console.log(setInfo);
+
         if (background === "Clear") {
           setWicon(sunny);
         } else if (background === "Clouds") {
@@ -66,6 +71,7 @@ function App() {
         } else {
           setWicon("");
         }
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -81,7 +87,7 @@ function App() {
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
     };
-  }, [city, apiKey, iconid, background, handleSearchCity]);
+  }, [city, apiKey, iconid, background, handleSearchCity,]);
 
   const getBackgroundColor = () => {
     switch (background) {
@@ -106,7 +112,6 @@ function App() {
   const dynamicBackground = {
     backgroundImage: getBackgroundColor(),
   };
-  
   const months = [
     "January",
     "Febuary",
@@ -133,7 +138,11 @@ function App() {
   ];
 
   const d = new Date();
-
+  
+  const add=()=>{
+    setSeeMore("True")
+  }
+ 
   return (
     <>
       <div className="Title">WEATHER APP</div>
@@ -151,33 +160,53 @@ function App() {
             <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" />
           </div>
         </div>
-        <div className="cityName">
-          <FontAwesomeIcon icon={faLocationDot} className="fontAwesome" />
-          {city}
-        </div>
-        <div className="date">
-          {weeks[d.getDay()] + ", " + d.getDate() + " " + months[d.getMonth()]}
-        </div>
-        <div className="image">
-          <img className="weatherLogo" src={wicon}></img>
-        </div>
-        <div className="temp">{info}°C</div>
-        <div className="description">{desc}</div>
-        <div className="minMaxTemp">
-          <div>Max:{minTemp}°C</div>
-          <div className="divider"></div>
-          <div>Min: {maxTemp}°C</div>
-        </div>
-
-        <div className="humidityWindIndex">
-          <div className="humidity">
-            <img src={humid} className="humidIcon"></img>
-            {humidity} %
+        <div className="WeatherUpdate">
+        {seeMore === "True" ? (
+          <div>
+            {weatherdetails.map((data, index) => (
+              <div key={index}>
+                <div className="row eachWeather">
+                <div className="col-8">{data.city}</div>
+                <div className="col-4">{data..temp}°C</div>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="Wind">
-            <img src={windicon} className="windIcon"></img>
-            {windSpeed} km/hr
-          </div>
+        ) : (
+          <div>
+            <div className="cityName">
+              <FontAwesomeIcon icon={faLocationDot} className="fontAwesome" />
+              {city}
+            </div>
+            <div className="date">
+              {weeks[d.getDay()] + ", " + d.getDate() + " " + months[d.getMonth()]}
+            </div>
+            <div className="image">
+              <img className="weatherLogo" src={wicon}></img>
+            </div>
+            <div className="temp">{info}°C</div>
+            <div className="description">{desc}</div>
+            <div className="minMaxTemp">
+              <div>Max:{minTemp}°C</div>
+              <div className="divider"></div>
+              <div>Min: {maxTemp}°C</div>
+            </div>
+    
+            <div className="humidityWindIndex">
+              <div className="humidity">
+                <img src={humid} className="humidIcon"></img>
+                {humidity} %
+              </div>
+              <div className="Wind">
+                <img src={windicon} className="windIcon"></img>
+                {windSpeed} km/hr
+              </div>
+            </div>
+            <div className="seeMoreDiv">
+              <button className="seeMoreButton" onClick={add}>See More<FontAwesomeIcon className='arrow' icon={faArrowRight} style={{color: "#000000",}} /></button>
+            </div>
+            </div>
+         ) }
         </div>
       </div>
     </>

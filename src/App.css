@@ -1,27 +1,38 @@
-.search{
-  display: flex;
-}
+
 .searchBar input{
   border-radius: 17px;
   height: 35px;
-  width: 280px;
+  width: 305px;
   height: 45px;
   margin: 20px 10px 10px 20px;
   padding-left: 20px;
 }
+.eachWeather{
+  height: 50px;
+  background-color:	  #6699cc;
+  color: white;
+  width: 310px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 30px;
+  padding: 10px;
+  margin-top: 20px;
+  font-family: Young serif;
+  font-size: 20px;
+}
 .searchIcon{
   margin-left: 10px;
   position: absolute;
-  left: 265px;
-  top:35px;
+  left: 275px;
+  top:32px;
   cursor: pointer;
 }
 .card{
   width: 350px;
-  height: 550px;
+  height: 570px;
   border-radius: 15px;
   position: absolute;
-  top: 23%;
+  top: 18%;
   left: 38%;
   box-shadow: 13px -9px 5px 0px rgba(223,223,223,0.74);
 -webkit-box-shadow: 13px -9px 5px 0px rgba(223,223,223,0.74);
@@ -46,7 +57,7 @@
   margin-left: auto;
 }
 .Title{
-  font-size: 50px;
+  font-size: 40px;
   text-align: center;
   margin-top: 40px;
   font-family: Young serif;
@@ -54,7 +65,7 @@
 .humidity{
   display: flex;
   flex-direction: column;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   text-align: center;
 }
@@ -62,7 +73,7 @@
   display: flex;
   flex-direction: column;
   margin-left: auto;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
 }
 .windIcon{
@@ -75,18 +86,18 @@
 }
 .humidityWindIndex{
   display: flex;
-  margin-top: 30px;
+  margin-top: 19px;
   margin-left: 30px;
   margin-right: 30px;
 }
 .cityName{
   margin-top:20px;
-  font-size: 40px;
+  font-size: 33px;
   text-align: center;
   font-family: Young serif;
 }
 .date{
-  margin-top: 10px;
+  margin-top: 4px;
   text-align: center;
 }
 .fontAwesome{
@@ -98,16 +109,32 @@
   justify-content: center;
 }
 .temp{
-  font-size: 30px;
+  font-size: 28px;
   font-weight: bold;
   text-align: center;
 }
 .description{
   text-align: center;
-  margin-top: 10px;
+  margin-top: 4px;
 }
 .minMaxTemp{
-  margin-top: 20px;
+  margin-top: 8px;
   display: flex;
   justify-content: center;
+}
+.seeMoreDiv{
+  width: 90px;
+  margin-left: auto;
+  margin-right: 30px;
+  margin-top: 13px;
+}
+.seeMoreButton{
+  padding: 5px;
+  border-radius: 3px;
+  background-color: white;
+  border: none;
+  font-size: 14px;
+}
+.arrow{
+  margin-left: 7px;
 }
