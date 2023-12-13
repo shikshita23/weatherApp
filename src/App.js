@@ -167,7 +167,7 @@ function App() {
               <div key={index}>
                 <div className="row eachWeather">
                 <div className="col-8">{data.city}</div>
-                <div className="col-4">{data..temp}°C</div>
+                <div className="col-4">{data.temp}°C</div>
                 </div>
               </div>
             ))}
