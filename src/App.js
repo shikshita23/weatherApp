@@ -29,31 +29,41 @@ function App() {
   const [background, setBackground] = useState("");
   const [iconid, setIconid] = useState("");
   const [wicon, setWicon] = useState("");
-  const [seeMore,setSeeMore]=useState("False");
-  const [weatherdetails,setWeatherDetails]=useState([]);
+  const [seeMore, setSeeMore] = useState("False");
+  const [weatherdetails, setWeatherDetails] = useState([]);
   
+  const [currentCityIndex, setCurrentCityIndex] = useState(0);
+
   const handleSearchCity = () => {
     setCity(search);
     setSearch("");
   };
 
+const handleSeeMore = () => {
+  let cities = [
+    "New York",
+    "London",
+    "Tokyo",
+    "Paris",
+    "Sydney",
+    "Berlin",
+    "Moscow",
+    "Rio de Janeiro",
+    "Toronto",
+    "Mumbai",
+  ];
+  let city = cities[currentCityIndex];
+  console.log("index==>", currentCityIndex);
+  console.log("length==>", cities.length);
+  setCity(city);
+  if (currentCityIndex !== cities.length - 1) {
+    setCurrentCityIndex(currentCityIndex+1)
+  } else {
+    setCurrentCityIndex(0)
+  }
+};
 
- 
-  let currentCityIndex = 0;
-  const handleSeeMore = () => {
-    let cities = ["New York", "London", "Tokyo", "Paris", "Sydney", "Berlin", "Moscow", "Rio de Janeiro", "Toronto", "Mumbai"];
-    let city = cities[currentCityIndex];
-    console.log("index==>",currentCityIndex)
-    console.log("length==>",cities.length)
-    setCity(city)
-    if(currentCityIndex!==cities.length){
-      currentCityIndex = currentCityIndex+1;
-    }
-    else{
-      currentCityIndex=0;
-    }
-  };
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -62,7 +72,7 @@ function App() {
         );
         const data = response?.data;
         console.log("data --->", data);
-      
+
         setInfo(Math.floor(data.main.temp));
         setHumidity(data.main.humidity);
         setwindSpeed(data.wind.speed);
@@ -87,13 +97,12 @@ function App() {
         } else {
           setWicon("");
         }
-
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-    
+
     const keyDownHandler = (event) => {
       if (event.key === "Enter") {
         handleSearchCity();
@@ -103,7 +112,7 @@ function App() {
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
     };
-  }, [city, apiKey, iconid, background, handleSearchCity,]);
+  }, [city, apiKey, iconid, background, handleSearchCity]);
 
   const getBackgroundColor = () => {
     switch (background) {
@@ -154,11 +163,10 @@ function App() {
   ];
 
   const d = new Date();
-  
-  const add=()=>{
-    setSeeMore("True")
-  }
-  
+
+  const add = () => {
+    setSeeMore("True");
+  };
 
   return (
     <>
@@ -178,49 +186,62 @@ function App() {
           </div>
         </div>
         <div className="WeatherUpdate">
-        {seeMore === "True" ? (
-          <>
-          <div className="row eachWeather">
-            <div  className="col-8">{city}</div>
-            <div className="col-4">{info}</div>
-          </div>
-            <button id="buttonToMore" onClick={handleSeeMore}>Add Other City</button>
-          </>
-        ) : (
-          <div>
-            <div className="cityName">
-              <FontAwesomeIcon icon={faLocationDot} className="fontAwesome" />
-              {city}
-            </div>
-            <div className="date">
-              {weeks[d.getDay()] + ", " + d.getDate() + " " + months[d.getMonth()]}
-            </div>
-            <div className="image">
-              <img className="weatherLogo" src={wicon}></img>
-            </div>
-            <div className="temp">{info}°C</div>
-            <div className="description">{desc}</div>
-            <div className="minMaxTemp">
-              <div>Max:{minTemp}°C</div>
-              <div className="divider"></div>
-              <div>Min: {maxTemp}°C</div>
-            </div>
-    
-            <div className="humidityWindIndex">
-              <div className="humidity">
-                <img src={humid} className="humidIcon"></img>
-                {humidity} %
+          {seeMore === "True" ? (
+            <>
+              <div className="row eachWeather">
+                <div className="col-8">{city}</div>
+                <div className="col-4">{info}</div>
               </div>
-              <div className="Wind">
-                <img src={windicon} className="windIcon"></img>
-                {windSpeed} km/hr
+              <button id="buttonToMore" onClick={handleSeeMore}>
+                Add Other City
+              </button>
+            </>
+          ) : (
+            <div>
+              <div className="cityName">
+                <FontAwesomeIcon icon={faLocationDot} className="fontAwesome" />
+                {city}
+              </div>
+              <div className="date">
+                {weeks[d.getDay()] +
+                  ", " +
+                  d.getDate() +
+                  " " +
+                  months[d.getMonth()]}
+              </div>
+              <div className="image">
+                <img className="weatherLogo" src={wicon}></img>
+              </div>
+              <div className="temp">{info}°C</div>
+              <div className="description">{desc}</div>
+              <div className="minMaxTemp">
+                <div>Max:{minTemp}°C</div>
+                <div className="divider"></div>
+                <div>Min: {maxTemp}°C</div>
+              </div>
+
+              <div className="humidityWindIndex">
+                <div className="humidity">
+                  <img src={humid} className="humidIcon"></img>
+                  {humidity} %
+                </div>
+                <div className="Wind">
+                  <img src={windicon} className="windIcon"></img>
+                  {windSpeed} km/hr
+                </div>
+              </div>
+              <div className="seeMoreDiv">
+                <button className="seeMoreButton" onClick={add}>
+                  See Other City
+                  <FontAwesomeIcon
+                    className="arrow"
+                    icon={faArrowRight}
+                    style={{ color: "#000000" }}
+                  />
+                </button>
               </div>
             </div>
-            <div className="seeMoreDiv">
-              <button className="seeMoreButton" onClick={add}>See Other City<FontAwesomeIcon className='arrow' icon={faArrowRight} style={{color: "#000000",}} /></button>
-            </div>
-            </div>
-         ) }
+          )}
         </div>
       </div>
     </>
