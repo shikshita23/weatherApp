@@ -37,6 +37,23 @@ function App() {
     setSearch("");
   };
 
+
+ 
+  let currentCityIndex = 0;
+  const handleSeeMore = () => {
+    let cities = ["New York", "London", "Tokyo", "Paris", "Sydney", "Berlin", "Moscow", "Rio de Janeiro", "Toronto", "Mumbai"];
+    let city = cities[currentCityIndex];
+    console.log("index==>",currentCityIndex)
+    console.log("length==>",cities.length)
+    setCity(city)
+    if(currentCityIndex!==cities.length){
+      currentCityIndex = currentCityIndex+1;
+    }
+    else{
+      currentCityIndex=0;
+    }
+  };
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,8 +62,7 @@ function App() {
         );
         const data = response?.data;
         console.log("data --->", data);
-       
-
+      
         setInfo(Math.floor(data.main.temp));
         setHumidity(data.main.humidity);
         setwindSpeed(data.wind.speed);
@@ -77,7 +93,7 @@ function App() {
       }
     };
     fetchData();
-
+    
     const keyDownHandler = (event) => {
       if (event.key === "Enter") {
         handleSearchCity();
@@ -142,7 +158,8 @@ function App() {
   const add=()=>{
     setSeeMore("True")
   }
- 
+  
+
   return (
     <>
       <div className="Title">WEATHER APP</div>
@@ -162,16 +179,13 @@ function App() {
         </div>
         <div className="WeatherUpdate">
         {seeMore === "True" ? (
-          <div>
-            {weatherdetails.map((data, index) => (
-              <div key={index}>
-                <div className="row eachWeather">
-                <div className="col-8">{data.city}</div>
-                <div className="col-4">{data.temp}°C</div>
-                </div>
-              </div>
-            ))}
+          <>
+          <div className="row eachWeather">
+            <div  className="col-8">{city}</div>
+            <div className="col-4">{info}</div>
           </div>
+            <button id="buttonToMore" onClick={handleSeeMore}>Add Other City</button>
+          </>
         ) : (
           <div>
             <div className="cityName">
@@ -203,7 +217,7 @@ function App() {
               </div>
             </div>
             <div className="seeMoreDiv">
-              <button className="seeMoreButton" onClick={add}>See More<FontAwesomeIcon className='arrow' icon={faArrowRight} style={{color: "#000000",}} /></button>
+              <button className="seeMoreButton" onClick={add}>See Other City<FontAwesomeIcon className='arrow' icon={faArrowRight} style={{color: "#000000",}} /></button>
             </div>
             </div>
          ) }
