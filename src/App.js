@@ -6,6 +6,7 @@ import {
   faMagnifyingGlass,
   faLocationDot,
   faArrowRight,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import cloudy from "./assets/cloudy.jpg";
 import drizzle from "./assets/drizzle.png";
@@ -15,12 +16,13 @@ import thunder from "./assets/thunder.jpg";
 import wind from "./assets/wind.png";
 import humid from "./assets/humid.png";
 import windicon from "./assets/winicon.png";
+import overcast from "./assets/overcast.png";
 function App() {
   let apiKey = "d0acf03fce49fe1a52ee286b83455656";
-  //const [weatherData, setWeatherData] = useState(null);
-  const [search, setSearch] = useState("Kathmandu");
+  const [search, setSearch] = useState("");
   const [city, setCity] = useState("Kathmandu");
   const [info, setInfo] = useState("");
+  console.log(info,"tempr")
   const [humidity, setHumidity] = useState("");
   const [windSpeed, setwindSpeed] = useState("");
   const [minTemp, setMinTemp] = useState("");
@@ -31,38 +33,13 @@ function App() {
   const [wicon, setWicon] = useState("");
   const [seeMore, setSeeMore] = useState("False");
   const [weatherdetails, setWeatherDetails] = useState([]);
-  
-  const [currentCityIndex, setCurrentCityIndex] = useState(0);
 
   const handleSearchCity = () => {
     setCity(search);
+    console.log("name of city=>", city);
     setSearch("");
+    
   };
-
-const handleSeeMore = () => {
-  let cities = [
-    "New York",
-    "London",
-    "Tokyo",
-    "Paris",
-    "Sydney",
-    "Berlin",
-    "Moscow",
-    "Rio de Janeiro",
-    "Toronto",
-    "Mumbai",
-  ];
-  let city = cities[currentCityIndex];
-  console.log("index==>", currentCityIndex);
-  console.log("length==>", cities.length);
-  setCity(city);
-  if (currentCityIndex !== cities.length - 1) {
-    setCurrentCityIndex(currentCityIndex+1)
-  } else {
-    setCurrentCityIndex(0)
-  }
-};
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,7 +49,6 @@ const handleSeeMore = () => {
         );
         const data = response?.data;
         console.log("data --->", data);
-
         setInfo(Math.floor(data.main.temp));
         setHumidity(data.main.humidity);
         setwindSpeed(data.wind.speed);
@@ -94,6 +70,8 @@ const handleSeeMore = () => {
           setWicon(wind);
         } else if (background === "Snow") {
           setWicon(snow);
+        } else if (background === "Smoke") {
+          setWicon(overcast);
         } else {
           setWicon("");
         }
@@ -130,13 +108,65 @@ const handleSeeMore = () => {
         return "linear-gradient(315deg, #f1f2f6 0%, #c9c6c6 74%)";
       case "Mist":
         return "linear-gradient(147deg, #c3cbdc 0%, #edf1f4 74%)";
+      case "Smoke":
+        return "linear-gradient(147deg, #c3cbdc 0%, #edf1f4 74%)";
       default:
         return "#ffffff";
     }
   };
+  const getRowColor = () => {
+    switch (background) {
+      case "Clear":
+        return "#df7707";
+      case "Clouds":
+        return "#6699cc";
+      case " Drizzle":
+        return "#6699cc";
+      case "Rain":
+        return "#a8a9ac";
+      case "Thunderstorm ":
+        return "#6699cc";
+      case "Snow":
+        return "#a8a9ac";
+      case "Mist":
+        return "#a8a9ac";
+      case "Smoke":
+        return "#a8a9ac";
+      default:
+        return "#ffffff";
+    }
+  };
+  const getRowFontColor = () => {
+    switch (background) {
+      case "Clear":
+        return "white";
+      case "Clouds":
+        return "white";
+      case " Drizzle":
+        return "black";
+      case "Rain":
+        return "black";
+      case "Thunderstorm ":
+        return "black";
+      case "Snow":
+        return "black";
+      case "Mist":
+        return "black";
+      case "Smoke":
+        return "black";
+      default:
+        return "black";
+    }
+  };
+
   const dynamicBackground = {
     backgroundImage: getBackgroundColor(),
   };
+  const dynamicRowBackground = {
+    background: getRowColor(),
+    color: getRowFontColor(),
+  };
+
   const months = [
     "January",
     "Febuary",
@@ -151,7 +181,6 @@ const handleSeeMore = () => {
     "November",
     "December",
   ];
-
   const weeks = [
     "Sunday",
     "Monday",
@@ -161,43 +190,85 @@ const handleSeeMore = () => {
     "Friday",
     "Saturday",
   ];
-
   const d = new Date();
-
   const add = () => {
     setSeeMore("True");
   };
+  console.log("before addcity func==>",info)
+  const addCity = () => {
+    console.log("csllrf hrtr")
 
+    console.log(info, "info state data ")
+    // setInfo("");
+    console.log("Weather Details before==>", weatherdetails);
+
+
+    setWeatherDetails([
+      ...weatherdetails,
+      {
+        search: search,
+        info: info,
+      },
+    ]);
+    setCity(search);
+    console.log("Weather Details after==>", weatherdetails);
+  };
   return (
     <>
       <div className="Title">WEATHER APP</div>
       <div className="card" style={dynamicBackground}>
-        <div className="search">
-          <div className="searchBar">
-            <input
-              className="cityInput"
-              type="text"
-              placeholder="Enter City"
-              onChange={(e) => setSearch(e.target.value)}
-            ></input>
-          </div>
-          <div className="searchIcon" onClick={handleSearchCity}>
-            <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" />
-          </div>
-        </div>
         <div className="WeatherUpdate">
           {seeMore === "True" ? (
             <>
-              <div className="row eachWeather">
-                <div className="col-8">{city}</div>
-                <div className="col-4">{info}</div>
+              <div className="add">
+                <div className="addBar">
+                  <input
+                    className="cityInput"
+                    type="text"
+                    placeholder="Enter City"
+                    onChange={(e) => setSearch(e.target.value)}
+                  ></input>
+                </div>
+                <div className="addIcon" onClick={addCity}>
+                  <FontAwesomeIcon icon={faPlus} size="lg" />
+                </div>
               </div>
-              <button id="buttonToMore" onClick={handleSeeMore}>
-                Add Other City
-              </button>
+              <div className="showList">
+                {weatherdetails.map((cities, i) => {
+                  console.log(cities.search, cities.info, "city data")
+                  return (
+                    <>
+                      <div
+                        className="row eachWeather "
+                        style={dynamicRowBackground}
+                      >
+                        <div className="col-8 rounded-left">
+                          <ul>
+                            <li>{cities.search}</li>
+                          </ul>
+                        </div>
+                        <div className="col-4 rounded-left">{cities.info}</div>
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
             </>
           ) : (
             <div>
+              <div className="search">
+                <div className="searchBar">
+                  <input
+                    className="cityInput"
+                    type="text"
+                    placeholder="Enter City"
+                    onChange={(e) => setSearch(e.target.value)}
+                  ></input>
+                </div>
+                <div className="searchIcon" onClick={handleSearchCity}>
+                  <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" />
+                </div>
+              </div>
               <div className="cityName">
                 <FontAwesomeIcon icon={faLocationDot} className="fontAwesome" />
                 {city}
@@ -210,7 +281,11 @@ const handleSeeMore = () => {
                   months[d.getMonth()]}
               </div>
               <div className="image">
-                <img className="weatherLogo" src={wicon}></img>
+                <img
+                  className="weatherLogo"
+                  src={wicon}
+                  alt="icon of different weather"
+                ></img>
               </div>
               <div className="temp">{info}°C</div>
               <div className="description">{desc}</div>
@@ -222,11 +297,19 @@ const handleSeeMore = () => {
 
               <div className="humidityWindIndex">
                 <div className="humidity">
-                  <img src={humid} className="humidIcon"></img>
+                  <img
+                    src={humid}
+                    className="humidIcon"
+                    alt="icon of humidity"
+                  ></img>
                   {humidity} %
                 </div>
                 <div className="Wind">
-                  <img src={windicon} className="windIcon"></img>
+                  <img
+                    src={windicon}
+                    className="windIcon"
+                    alt="icon of wind"
+                  ></img>
                   {windSpeed} km/hr
                 </div>
               </div>
