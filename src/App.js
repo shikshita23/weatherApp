@@ -22,7 +22,6 @@ function App() {
   const [search, setSearch] = useState("");
   const [city, setCity] = useState("Kathmandu");
   const [info, setInfo] = useState("");
-  console.log(info,"tempr")
   const [humidity, setHumidity] = useState("");
   const [windSpeed, setwindSpeed] = useState("");
   const [minTemp, setMinTemp] = useState("");
@@ -31,14 +30,14 @@ function App() {
   const [background, setBackground] = useState("");
   const [iconid, setIconid] = useState("");
   const [wicon, setWicon] = useState("");
-  const [seeMore, setSeeMore] = useState("False");
+  const [seeMore, setSeeMore] = useState(false);
   const [weatherdetails, setWeatherDetails] = useState([]);
+
+  console.log("info ---->", info);
 
   const handleSearchCity = () => {
     setCity(search);
-    console.log("name of city=>", city);
     setSearch("");
-    
   };
 
   useEffect(() => {
@@ -48,7 +47,6 @@ function App() {
           `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
         );
         const data = response?.data;
-        console.log("data --->", data);
         setInfo(Math.floor(data.main.temp));
         setHumidity(data.main.humidity);
         setwindSpeed(data.wind.speed);
@@ -76,9 +74,10 @@ function App() {
           setWicon("");
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        // console.error("Error fetching data:", error);
       }
     };
+
     fetchData();
 
     const keyDownHandler = (event) => {
@@ -90,7 +89,7 @@ function App() {
     return () => {
       document.removeEventListener("keydown", keyDownHandler);
     };
-  }, [city, apiKey, iconid, background, handleSearchCity]);
+  }, [city, apiKey, iconid, info,  background, handleSearchCity]);
 
   const getBackgroundColor = () => {
     switch (background) {
@@ -191,34 +190,40 @@ function App() {
     "Saturday",
   ];
   const d = new Date();
+
   const add = () => {
-    setSeeMore("True");
+    setSeeMore(true);
   };
-  console.log("before addcity func==>",info)
-  const addCity = () => {
-    console.log("csllrf hrtr")
 
-    console.log(info, "info state data ")
-    // setInfo("");
-    console.log("Weather Details before==>", weatherdetails);
+const addCity = async () => {
+  try {
+    const response = await axios.get(
+      `https://api.openweathermap.org/data/2.5/weather?q=${search}&units=metric&appid=${apiKey}`
+    );
+    const data = response?.data;
+    const newInfo = Math.floor(data.main.temp);
 
-
-    setWeatherDetails([
+    const newWeatherDetails = [
       ...weatherdetails,
       {
         search: search,
-        info: info,
+        info: newInfo,
       },
-    ]);
+    ];
+
+    setWeatherDetails(newWeatherDetails);
     setCity(search);
-    console.log("Weather Details after==>", weatherdetails);
-  };
+  } catch (error) {
+    console.log("error while fetching data of adding city");
+  }
+};
+
   return (
     <>
       <div className="Title">WEATHER APP</div>
       <div className="card" style={dynamicBackground}>
         <div className="WeatherUpdate">
-          {seeMore === "True" ? (
+          {seeMore ? (
             <>
               <div className="add">
                 <div className="addBar">
@@ -235,7 +240,6 @@ function App() {
               </div>
               <div className="showList">
                 {weatherdetails.map((cities, i) => {
-                  console.log(cities.search, cities.info, "city data")
                   return (
                     <>
                       <div
