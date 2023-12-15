@@ -1,16 +1,7 @@
-
 .searchBar input{
   border-radius: 17px;
   height: 35px;
-  width: 305px;
-  height: 45px;
-  margin: 20px 10px 10px 20px;
-  padding-left: 20px;
-}
-.addBar input{
-  border-radius: 17px;
-  height: 35px;
-  width: 305px;
+  width: 315px;
   height: 45px;
   margin: 20px 10px 10px 20px;
   padding-left: 20px;
@@ -20,38 +11,52 @@
   margin-top: 20px;
   display: flex;
   align-items: end;
-  
 }
-.eachWeather{
+.delIcon{
+  cursor: pointer;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 15px;
+  margin-right: 20px;
+}
+
+.individualCityInfo{
   height: 50px;
-  width: 310px;
-  margin-left: auto;
+  width: 275px;
+  margin-left: 25px;
   margin-right: auto;
   border-radius: 30px;
   padding: 10px;
   margin-top: 20px;
   font-family: Young serif;
-  font-size: 20px;
+  font-size: 18px;
 }
 .searchIcon{
   margin-left: 10px;
   position: absolute;
-  left: 275px;
+  left: 290px;
   top:32px;
   cursor: pointer;
 }
-.addIcon{
+.temprCol{
+  text-align: end;
+}
+.plusIcon{
   margin-left: 10px;
   position: absolute;
-  left: 275px;
+  left: 290px;
   top:32px;
   cursor: pointer;
 }
+.showCitiesInfo{
+  height: 435px;
+  overflow: auto;
+}
 .card{
-  width: 350px;
+  width: 360px;
   height: 570px;
   border-radius: 15px;
-  position: absolute;
+  position: fixed;
   top: 18%;
   left: 38%;
   box-shadow: 13px -9px 5px 0px rgba(223,223,223,0.74);
@@ -78,8 +83,9 @@
 }
 .Title{
   font-size: 40px;
-  text-align: center;
-  margin-top: 40px;
+  position: fixed;
+  left: 39%;
+  top: 6%;
   font-family: Young serif;
 }
 .humidity{
@@ -154,6 +160,17 @@
   background-color: white;
   border: none;
   font-size: 14px;
+}
+.backButton{
+  padding: 5px;
+  border-radius: 3px;
+  background-color: white;
+  border: none;
+  font-size: 14px;
+  width: 75px;
+  position: absolute;
+  top: 520px;
+  left: 27px;
 }
 .arrow{
   margin-left: 7px;
